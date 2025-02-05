@@ -1,0 +1,133 @@
+<!-- layout.html -->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title if title else "Demograficzny Monitor" }}</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Demograficzny Monitor</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarToggler" aria-controls="navbarToggler"
+            aria-expanded="false" aria-label="Przełącz nawigację">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarToggler">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('stats') }}">Statystyki</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('compare') }}">Porównaj</a>
+        </li>
+
+        {% if session.get('username') %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">{{ session['username'] }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('logout') }}">Wyloguj</a>
+          </li>
+          {% if session.get('role') == 'admin' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin_panel') }}">Admin</a>
+            </li>
+          {% endif %}
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Zaloguj</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Zarejestruj</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container mt-4">
+  <!-- Wiadomości flash -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+          {{ msg }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Zamknij"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+<div class="container my-4">
+  {% block content %}{% endblock %}
+</div>
+
+
+<!-- Modale (Bootstrap 5) -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="{{ url_for('login') }}" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Logowanie</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="username" class="form-label">Nazwa użytkownika</label>
+          <input type="text" class="form-control" name="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Hasło</label>
+          <input type="password" class="form-control" name="password" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Zaloguj</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="{{ url_for('register') }}" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">Rejestracja</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="username" class="form-label">Nazwa użytkownika</label>
+          <input type="text" class="form-control" name="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Hasło</label>
+          <input type="password" class="form-control" name="password" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Zarejestruj</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Bootstrap 5 JS + Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Własne skrypty (opcjonalnie) -->
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!-- admin.html -->
+{% extends "layout.html" %}
+{% block content %}
+<h2>Panel Administratora</h2>
+<p>Lista użytkowników:</p>
+<table class="table table-bordered mb-3">
+  <thead>
+    <tr>
+      <th>ID</th><th>Nazwa</th><th>Rola</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+      <tr>
+        <td>{{u.id}}</td>
+        <td>{{u.username}}</td>
+        <td>{{u.role}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p>Ostatnie zapytania (max 30):</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th><th>User ID</th><th>Użytkownik</th><th>Województwo</th><th>Czas</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for h in history %}
+      <tr>
+        <td>{{ h.id }}</td>
+        <td>{{ h.user_id }}</td>
+        <td>{{ h.username }}</td>
+        <td>{{ h.wojewodztwo }}</td>
+        <td>{{ h.search_time }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

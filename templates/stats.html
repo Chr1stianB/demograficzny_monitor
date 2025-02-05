@@ -1,0 +1,39 @@
+<!-- stats.html -->
+{% extends "layout.html" %}
+{% block content %}
+<h2>Statystyki Demograficzne</h2>
+
+<form method="POST" class="row g-3 mb-4">
+  <div class="col-auto">
+    <label for="wojewodztwo" class="col-form-label">Województwo:</label>
+  </div>
+  <div class="col-auto">
+    <select name="wojewodztwo" id="wojewodztwo" class="form-control">
+      {% for w in woj_list %}
+      <option value="{{ w }}" {% if w == wybrane_woj %}selected{% endif %}>{{ w }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Pokaż</button>
+  </div>
+</form>
+
+<h5>Wybrane województwo: {{ wybrane_woj }}</h5>
+<p>Prognoza +{{forecast_horizon}} lat metodą regresji liniowej.</p>
+
+<!-- WYKRES 1 -->
+<div class="mb-5">
+  {{ graph1|safe }}
+</div>
+
+<!-- WYKRES 2 -->
+<div class="mb-5">
+  {{ graph2|safe }}
+</div>
+
+<!-- WYKRES 3 -->
+<div class="mb-5">
+  {{ graph3|safe }}
+</div>
+{% endblock %}

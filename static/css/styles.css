@@ -1,0 +1,11 @@
+/* styles.css */
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+  }
+  .navbar-brand {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  

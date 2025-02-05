@@ -1,0 +1,23 @@
+<!-- ranking.html -->
+{% extends "layout.html" %}
+{% block content %}
+<h2>Ranking Najludniejszych Województw ({{ rok }})</h2>
+<table class="table table-hover mt-4">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Województwo</th>
+      <th>Liczba ludności</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for idx, row in ranking|enumerate(start=1) %}
+    <tr>
+      <td>{{ idx }}</td>
+      <td>{{ row.Wojewodztwo }}</td>
+      <td>{{ row['ogółem ogółem'] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
