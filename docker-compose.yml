@@ -1,0 +1,40 @@
+# docker-compose.yml
+services:
+  db:
+    image: mysql:8.0
+    container_name: demograf_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: demografia_db
+      MYSQL_USER: demouser
+      MYSQL_PASSWORD: demopass
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  app:
+    build: .
+    container_name: demograf_app
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5001:5001"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: demouser
+      DB_PASS: demopass
+      DB_NAME: demografia_db
+    command: ["python", "app/app.py"]
+
+volumes:
+  db_data:
