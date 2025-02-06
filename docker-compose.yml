@@ -34,7 +34,9 @@ services:
       DB_USER: demouser
       DB_PASS: demopass
       DB_NAME: demografia_db
-    command: ["python", "app/app.py"]
+
+    command: >
+      bash -c "python app/data_download.py && python app/app.py"
 
 volumes:
   db_data:
